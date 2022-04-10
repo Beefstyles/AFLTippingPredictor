@@ -1,0 +1,142 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+install.packages("fitzRoy")
+```
+```{r}
+library(fitzRoy)
+```
+
+```{r}
+fixtures_2020 = fetch_fixture(season=2020, comp="AFLM")
+```
+```{r}
+fixtures_2020
+```
+
+```{r}
+lineup_2020 = fetch_lineup(season = 2020, comp = "AFLM")
+```
+```{r}
+lineup_2020
+```
+```{r}
+results_2020 = fetch_results(season = 2020, comp = "AFLM")
+results_2020 <- apply(results_2020,2,as.character)
+write.table(results_2020,"C:\\Users\\Beefsports\\Desktop\\Results\\Results_2020.csv", sep=",",row.names = FALSE)
+```
+```{r}
+results_2013 = fetch_results(season = 2013, comp = "AFLM")
+results_2013 <- apply(results_2013,2,as.character)
+write.table(results_2013,"C:\\Users\\Beefsports\\Desktop\\Results\\Results_2013.csv", sep=",",row.names = FALSE)
+```
+```{r}
+results_2014 = fetch_results(season = 2014, comp = "AFLM")
+results_2014 <- apply(results_2014,2,as.character)
+write.table(results_2014,"C:\\Users\\Beefsports\\Desktop\\Results\\Results_2014.csv", sep=",",row.names = FALSE)
+```
+```{r}
+results_2015 = fetch_results(season = 2015, comp = "AFLM")
+results_2015 <- apply(results_2015,2,as.character)
+write.table(results_2015,"C:\\Users\\Beefsports\\Desktop\\Results\\Results_2015.csv", sep=",",row.names = FALSE)
+```
+```{r}
+results_2016 = fetch_results(season = 2016, comp = "AFLM")
+results_2016 <- apply(results_2016,2,as.character)
+write.table(results_2016,"C:\\Users\\Beefsports\\Desktop\\Results\\Results_2016.csv", sep=",",row.names = FALSE)
+```
+```{r}
+results_2017 = fetch_results(season = 2017, comp = "AFLM")
+results_2017 <- apply(results_2017,2,as.character)
+write.table(results_2017,"C:\\Users\\Beefsports\\Desktop\\Results\\Results_2017.csv", sep=",",row.names = FALSE)
+```
+```{r}
+results_2018 = fetch_results(season = 2018, comp = "AFLM")
+results_2018 <- apply(results_2018,2,as.character)
+write.table(results_2018,"C:\\Users\\Beefsports\\Desktop\\Results\\Results_2018.csv", sep=",",row.names = FALSE)
+```
+```{r}
+results_2019 = fetch_results(season = 2019, comp = "AFLM")
+results_2019 <- apply(results_2019,2,as.character)
+write.table(results_2019,"C:\\Users\\Beefsports\\Desktop\\Results\\Results_2019.csv", sep=",",row.names = FALSE)
+```
+
+```{r}
+ladder_2013 = fetch_ladder(season = 2013, comp = "AFLM")
+write.table(ladder_2013,"C:\\Users\\Beefsports\\Desktop\\Results\\Results_2019.csv", sep=",",row.names = FALSE)
+```
+```{r}
+year_range <- c(2013,2014,2015,2016,2017,2018,2019,2020,2021)
+round_range <- seq(1, 23, by=1)
+round_range
+```
+
+```{r}
+for (year in year_range){
+  for (round in round_range){
+    ladder_val = fetch_ladder(season = year, round=round, comp = "AFLM", source = "squiggle")
+    file_path = paste("C:\\Users\\Beefsports\\Desktop\\Results\\Ladder_",year,"_R_",round,".csv", sep="")
+    write.table(ladder_val,file_path, sep=",",row.names = FALSE)
+  }
+  
+}
+```
+```{r}
+for (year in year_range){
+    player_stats = fetch_player_stats(season = year, comp = "AFLM", source = "fryzigg")
+    file_path = paste("C:\\Users\\Beefsports\\Desktop\\Results\\Player_Stats_",year,".csv", sep="")
+    write.table(player_stats,file_path, sep=",",row.names = FALSE)
+  }
+```
+```{r}
+for (year in year_range){
+    fixture_value = fetch_fixture(season = year, comp = "AFLM", source = "squiggle")
+    file_path = paste("C:\\Users\\Beefsports\\Desktop\\Results\\Fixture_",year,".csv", sep="")
+    fwrite(fixture_value, file_path, sep=",",row.names = FALSE)
+  }
+```
+```{r}
+library(tidyverse)
+fixture_value_cleaned <- fixture_value %>%
+  mutate(round.byes = map(round.byes, ~map_dfr(., as.tibble))) %>%
+  unnest()
+```
+```{r}
+fixture_value$round.byes
+```
+```{r}
+typeof(fixture_value_cleaned)
+fixture_value_cleaned <- as_tibble(
+  fixture_value,
+  .name_repair = c("check_unique", "unique", "universal", "minimal")
+)
+```
+```{r}
+library(rlist)
+rounds <- list.expand(fixture_value$round.byes)
+```
+```{r}
+install.packages('data.table')
+library('data.table')
+```
+
+```{r}
+library(dplyr)
+library(tidyr)
+
+
+round_byes <- 
+  unnest(fixture_value$round.byes) %>% 
+  group_by(fixture_value$round.roundNumber) %>% 
+  mutate(col=seq_along(fixture_value$round.roundNumber)) %>% #add a column indicator
+  spread(key=col, value=fixture_value$round.byes)
+```
+
+
+
+
+
+

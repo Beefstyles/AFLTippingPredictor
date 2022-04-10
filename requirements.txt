@@ -1,0 +1,10 @@
+psycopg2-binary
+numpy
+pandas
+logger
+sqlalchemy
+pyodbc
+configparser
+importlib
+requests
+rpy2
