@@ -63,13 +63,23 @@ results_2019 = fetch_results(season = 2019, comp = "AFLM")
 results_2019 <- apply(results_2019,2,as.character)
 write.table(results_2019,"C:\\Users\\Beefsports\\Desktop\\Results\\Results_2019.csv", sep=",",row.names = FALSE)
 ```
+```{r}
+results_2021 = fetch_results(season = 2021, comp = "AFLM")
+results_2021 <- apply(results_2021,2,as.character)
+write.table(results_2021,"C:\\Users\\Beefsports\\Desktop\\Results\\Results_2021.csv", sep=",",row.names = FALSE)
+```
+```{r}
+results_2022 = fetch_results(season = 2022, comp = "AFLM")
+results_2022 <- apply(results_2022,2,as.character)
+write.table(results_2022,"C:\\Users\\Beefsports\\Desktop\\Results\\Results_2022.csv", sep=",",row.names = FALSE)
+```
 
 ```{r}
 ladder_2013 = fetch_ladder(season = 2013, comp = "AFLM")
 write.table(ladder_2013,"C:\\Users\\Beefsports\\Desktop\\Results\\Results_2019.csv", sep=",",row.names = FALSE)
 ```
 ```{r}
-year_range <- c(2013,2014,2015,2016,2017,2018,2019,2020,2021)
+year_range <- c(2013,2014,2015,2016,2017,2018,2019,2020,2021,2022)
 round_range <- seq(1, 23, by=1)
 round_range
 ```
@@ -102,7 +112,7 @@ for (year in year_range){
 for (year in year_range){
     fixture_value = fetch_fixture(season = year, comp = "AFLM", source = "squiggle")
     file_path = paste("C:\\Users\\Beefsports\\Desktop\\Results\\Fixture_",year,".csv", sep="")
-    fwrite(fixture_value, file_path, sep=",",row.names = FALSE)
+    write.table(fixture_value, file_path, sep=",",row.names = FALSE)
   }
 ```
 ```{r}
